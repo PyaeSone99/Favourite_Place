@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
-  const ImageInput ({super.key});
+  const ImageInput ({super.key,required this.onPickImage});
+  
+  final void Function(File image) onPickImage;
 
   @override
   State<ImageInput> createState() {
@@ -15,6 +17,7 @@ class _ImageInputState extends State<ImageInput> {
 
   File? _selectedImage; 
 
+
   void _takePicture() async {
     final imagePicker = ImagePicker();
     final pickedImage = await imagePicker.pickImage(source: ImageSource.camera,maxWidth: 600);
@@ -25,6 +28,8 @@ class _ImageInputState extends State<ImageInput> {
     setState(() {
       _selectedImage = File(pickedImage.path);
     });
+
+    widget.onPickImage(_selectedImage!);
   }
   
   @override
